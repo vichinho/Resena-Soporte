@@ -1,27 +1,31 @@
-package com.resenasup.resenasup.Service;
+package com.resenasup.resenasup.service;
 
-import com.resenasup.resenasup.Model.Soporte;
-import com.resenasup.resenasup.Repository.SoporteRepository;
+import com.resenasup.resenasup.model.Soporte;
+import com.resenasup.resenasup.repository.SoporteRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import jakarta.validation.Valid;
 
 @Service
+@RequiredArgsConstructor
 public class SoporteService {
     private final SoporteRepository soporteRepository;
 
-    public SoporteService(SoporteRepository soporteRepository) {
-        this.soporteRepository = soporteRepository;
-    }
-    
-    public Soporte crearSolicitudSoporte(String tipo, String mensaje) {
-        Soporte soporte = new Soporte(tipo, mensaje);
+    public Soporte crearSoporte(@Valid Soporte soporte) {
         return soporteRepository.save(soporte);
     }
-    
-    public Soporte actualizarEstado(String idSoporte, Soporte.Estado nuevoEstado) {
+
+    public Soporte actualizarEstado(Long idSoporte, String nuevoEstado) {
         Soporte soporte = soporteRepository.findById(idSoporte)
-            .orElseThrow(() -> new RuntimeException("Soporte no encontrado"));
-        
-        soporte.setEstado(nuevoEstado);
+                .orElseThrow(() -> new IllegalArgumentException("Soporte no encontrado"));
+        soporte.actualizarEstado(nuevoEstado);
+        return soporteRepository.save(soporte);
+    }
+
+    public Soporte actualizarTipo(Long idSoporte, String nuevoTipo) {
+        Soporte soporte = soporteRepository.findById(idSoporte)
+                .orElseThrow(() -> new IllegalArgumentException("Soporte no encontrado"));
+        soporte.actualizarTipo(nuevoTipo);
         return soporteRepository.save(soporte);
     }
 }

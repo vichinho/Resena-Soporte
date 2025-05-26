@@ -1,35 +1,34 @@
-package com.resenasup.resenasup.Controller;
+package com.resenasup.resenasup.controller;
 
-
-
-import com.resenasup.resenasup.Model.Soporte;
-import com.resenasup.resenasup.Service.SoporteService;
-
+import com.resenasup.resenasup.model.Soporte;
+import com.resenasup.resenasup.service.SoporteService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/soporte")
+@RequestMapping("/api/soportes")
+@RequiredArgsConstructor
 public class SoporteController {
     private final SoporteService soporteService;
 
-    public SoporteController(SoporteService soporteService) {
-        this.soporteService = soporteService;
-    }
-    
     @PostMapping
-    public ResponseEntity<Soporte> crearSolicitud(
-            @RequestParam String tipo,
-            @RequestParam String mensaje) {
-        Soporte soporte = soporteService.crearSolicitudSoporte(tipo, mensaje);
-        return ResponseEntity.ok(soporte);
+    public ResponseEntity<Soporte> crearSoporte(@Valid @RequestBody Soporte soporte) {
+        Soporte nuevoSoporte = soporteService.crearSoporte(soporte);
+        return new ResponseEntity<>(nuevoSoporte, HttpStatus.CREATED);
     }
-    
-    @PatchMapping("/{id}/estado")
-    public ResponseEntity<Soporte> actualizarEstado(
-            @PathVariable String id,
-            @RequestParam Soporte.Estado nuevoEstado) {
-        Soporte soporte = soporteService.actualizarEstado(id, nuevoEstado);
-        return ResponseEntity.ok(soporte);
+
+    @PutMapping("/{id}/estado")
+    public ResponseEntity<Soporte> actualizarEstado(@PathVariable Long id, @RequestBody String nuevoEstado) {
+        Soporte soporteActualizado = soporteService.actualizarEstado(id, nuevoEstado);
+        return ResponseEntity.ok(soporteActualizado);
+    }
+
+    @PutMapping("/{id}/tipo")
+    public ResponseEntity<Soporte> actualizarTipo(@PathVariable Long id, @RequestBody String nuevoTipo) {
+        Soporte soporteActualizado = soporteService.actualizarTipo(id, nuevoTipo);
+        return ResponseEntity.ok(soporteActualizado);
     }
 }

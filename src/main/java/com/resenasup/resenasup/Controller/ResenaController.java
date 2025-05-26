@@ -1,28 +1,42 @@
-package com.resenasup.resenasup.Controller;
+package com.resenasup.resenasup.controller;
 
-import com.resenasup.resenasup.Model.Resena;
-import com.resenasup.resenasup.Service.ResenaService;
+import com.resenasup.resenasup.model.Resena;
+import com.resenasup.resenasup.service.ResenaService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/resenas")
+@RequiredArgsConstructor
 public class ResenaController {
     private final ResenaService resenaService;
 
-    public ResenaController(ResenaService resenaService) {
-        this.resenaService = resenaService;
-    }
-    
     @PostMapping
-    public ResponseEntity<Resena> crearResena(@RequestParam String comentario) {
-        Resena nuevaResena = resenaService.crearResena(comentario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaResena);
+    public ResponseEntity<Resena> createResena(@Valid @RequestBody Resena resena) {
+        Resena creada = resenaService.crearResena(resena);
+        return new ResponseEntity<>(creada, HttpStatus.CREATED);
     }
-    
+
     @GetMapping("/{id}")
-    public ResponseEntity<Resena> obtenerResena(@PathVariable Long id) {
-        return ResponseEntity.ok(resenaService.obtenerResena(id));
+    public ResponseEntity<Resena> getResenaById(@PathVariable Long id) {
+        Resena resena = resenaService.obtenerResenaPorId(id);
+        return ResponseEntity.ok(resena);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Resena>> getTodasResenas() {
+        List<Resena> resenas = resenaService.obtenerTodasResenas();
+        return ResponseEntity.ok(resenas);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteResena(@PathVariable Long id) {
+        resenaService.eliminarResena(id);
+        return ResponseEntity.noContent().build();
     }
 }

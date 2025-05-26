@@ -1,49 +1,54 @@
-package com.resenasup.resenasup.Model;
+package com.resenasup.resenasup.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "soportes")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Soporte {
-    public enum Estado {
-        PENDIENTE, EN_PROCESO, RESUELTO, CERRADO
-    }
-    
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String idSoporte;
-    
-    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_soporte", updatable = false, nullable = false)
+    private Long idSoporte;
+
     private String tipo;
-    
-    @Column(nullable = false, length = 2000)
+
+    @NotBlank(message = "El mensaje no puede estar vacío")
+    @Size(max = 1000, message = "El mensaje no puede exceder 1000 caracteres")
     private String mensaje;
-    
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Estado estado = Estado.PENDIENTE;
-    
+
+    private String estado;
+
     @Column(nullable = false)
     private LocalDateTime fecha;
 
-    public Soporte() {
+    @PrePersist
+    protected void onCreate() {
         this.fecha = LocalDateTime.now();
+        this.tipo = "POR_DEFINIR";
+        this.estado = "PENDIENTE";
     }
-    
-    public Soporte(String tipo, String mensaje) {
-        this();
-        this.tipo = tipo;
-        this.mensaje = mensaje;
+
+    public void actualizarEstado(String nuevoEstado) {
+        if (nuevoEstado != null && !nuevoEstado.isBlank()) {
+            this.estado = nuevoEstado;
+        } else {
+            throw new IllegalArgumentException("El nuevo estado no puede estar vacío");
+        }
     }
-    
-    // Getters y Setters
-    public String getIdSoporte() { return idSoporte; }
-    public String getTipo() { return tipo; }
-    public String getMensaje() { return mensaje; }
-    public Estado getEstado() { return estado; }
-    public LocalDateTime getFecha() { return fecha; }
-    
-    public void setTipo(String tipo) { this.tipo = tipo; }
-    public void setMensaje(String mensaje) { this.mensaje = mensaje; }
-    public void setEstado(Estado estado) { this.estado = estado; }
+
+    public void actualizarTipo(String nuevoTipo) {
+        if (nuevoTipo != null && !nuevoTipo.isBlank()) {
+            this.tipo = nuevoTipo;
+        } else {
+            throw new IllegalArgumentException("El nuevo tipo no puede estar vacío");
+        }
+    }
 }

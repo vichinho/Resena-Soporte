@@ -1,26 +1,35 @@
-package com.resenasup.resenasup.Service;
+package com.resenasup.resenasup.service;
 
-import com.resenasup.resenasup.Model.Resena;
-import com.resenasup.resenasup.Repository.ResenaRepository;
+import com.resenasup.resenasup.model.Resena;
+import com.resenasup.resenasup.repository.ResenaRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.validation.Valid;
+
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ResenaService {
     private final ResenaRepository resenaRepository;
 
-    public ResenaService(ResenaRepository resenaRepository) {
-        this.resenaRepository = resenaRepository;
-    }
-    
-    @Transactional
-    public Resena crearResena(String comentario) {
-        Resena resena = new Resena(comentario);
+    public Resena crearResena(@Valid Resena resena) {
         return resenaRepository.save(resena);
     }
-    
-    public Resena obtenerResena(Long id) {
+
+    public Resena obtenerResenaPorId(Long id) {
         return resenaRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Reseña no encontrada"));
+                .orElseThrow(() -> new IllegalArgumentException("Reseña no encontrada"));
+    }
+
+    public List<Resena> obtenerTodasResenas() {
+        return resenaRepository.findAll();
+    }
+
+    public void eliminarResena(Long id) {
+        if (!resenaRepository.existsById(id)) {
+            throw new IllegalArgumentException("Reseña no encontrada");
+        }
+        resenaRepository.deleteById(id);
     }
 }

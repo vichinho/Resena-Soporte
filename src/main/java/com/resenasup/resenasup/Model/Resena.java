@@ -1,32 +1,36 @@
-package com.resenasup.resenasup.Model;
+package com.resenasup.resenasup.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
+import jakarta.validation.constraints.*;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "resenas")
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Resena {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    @Column(nullable = false, length = 1000)
+    @Column(name = "id_resena", updatable = false, nullable = false)
+    private Long idResena;
+
+    @NotBlank(message = "El comentario no puede estar vacío")
+    @Size(max = 500, message = "El comentario no puede exceder 500 caracteres")
     private String comentario;
-    
+
     @Column(nullable = false)
-    private LocalDateTime fecha = LocalDateTime.now();
-    
-    @OneToOne(mappedBy = "resena", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Calificacion calificacion;
+    private LocalDateTime fecha;
 
-    public Resena() {}
+    @NotNull(message = "La puntuación es obligatoria")
+    @Min(value = 1, message = "La puntuación debe ser al menos 1")
+    @Max(value = 5, message = "La puntuación no puede exceder 5")
+    private Integer puntuacion;
 
-    public Resena(String comentario) {
-        this.comentario = comentario;
+    @PrePersist
+    protected void onCreate() {
+        this.fecha = LocalDateTime.now();
     }
 }
