@@ -1,9 +1,13 @@
 package com.resenasup.resenasup.controller;
 
+import com.resenasup.resenasup.model.Resena;
 import com.resenasup.resenasup.model.Soporte;
 import com.resenasup.resenasup.service.SoporteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,5 +34,10 @@ public class SoporteController {
     public ResponseEntity<Soporte> actualizarTipo(@PathVariable Long id, @RequestBody String nuevoTipo) {
         Soporte soporteActualizado = soporteService.actualizarTipo(id, nuevoTipo);
         return ResponseEntity.ok(soporteActualizado);
+    }
+    @GetMapping
+    public ResponseEntity<List<Soporte>> getTodoSoporte() {
+        List<Soporte> soporte = soporteService.obtenerTodosSoportes();
+        return ResponseEntity.ok(soporte);
     }
 }

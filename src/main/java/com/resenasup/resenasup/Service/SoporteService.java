@@ -1,8 +1,12 @@
 package com.resenasup.resenasup.service;
 
+import com.resenasup.resenasup.model.Resena;
 import com.resenasup.resenasup.model.Soporte;
 import com.resenasup.resenasup.repository.SoporteRepository;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import jakarta.validation.Valid;
 
@@ -27,5 +31,8 @@ public class SoporteService {
                 .orElseThrow(() -> new IllegalArgumentException("Soporte no encontrado"));
         soporte.actualizarTipo(nuevoTipo);
         return soporteRepository.save(soporte);
+    }
+    public List<Soporte> obtenerTodosSoportes() {
+        return soporteRepository.findAll();
     }
 }
