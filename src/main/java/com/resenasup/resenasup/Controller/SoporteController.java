@@ -1,6 +1,4 @@
 package com.resenasup.resenasup.controller;
-
-import com.resenasup.resenasup.model.Resena;
 import com.resenasup.resenasup.model.Soporte;
 import com.resenasup.resenasup.service.SoporteService;
 import jakarta.validation.Valid;

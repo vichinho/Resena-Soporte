@@ -1,6 +1,5 @@
 package com.resenasup.resenasup.service;
 
-import com.resenasup.resenasup.model.Resena;
 import com.resenasup.resenasup.model.Soporte;
 import com.resenasup.resenasup.repository.SoporteRepository;
 import lombok.RequiredArgsConstructor;
