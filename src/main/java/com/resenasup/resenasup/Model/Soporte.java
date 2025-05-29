@@ -1,8 +1,7 @@
 package com.resenasup.resenasup.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import java.time.LocalDateTime;
 
@@ -28,6 +27,10 @@ public class Soporte {
 
     @Column(nullable = false)
     private LocalDateTime fecha;
+
+    @NotNull(message = "El ID del usuario es obligatorio")
+    @Column(name = "id_usuario", nullable = false)
+    private Long idUsuario;
 
     @PrePersist
     protected void onCreate() {

@@ -3,11 +3,10 @@ package com.resenasup.resenasup.service;
 import com.resenasup.resenasup.model.Soporte;
 import com.resenasup.resenasup.repository.SoporteRepository;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import jakarta.validation.Valid;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +30,14 @@ public class SoporteService {
         soporte.actualizarTipo(nuevoTipo);
         return soporteRepository.save(soporte);
     }
+
+    public List<Soporte> obtenerSoportesPorUsuario(Long idUsuario) {
+        if (idUsuario == null) {
+            throw new IllegalArgumentException("El ID del usuario no puede ser nulo");
+        }
+        return soporteRepository.findByIdUsuario(idUsuario);
+    }
+
     public List<Soporte> obtenerTodosSoportes() {
         return soporteRepository.findAll();
     }

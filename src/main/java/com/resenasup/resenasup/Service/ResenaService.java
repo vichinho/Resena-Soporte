@@ -26,6 +26,13 @@ public class ResenaService {
         return resenaRepository.findAll();
     }
 
+    public List<Resena> obtenerResenasPorProducto(String idProducto) {
+        if (idProducto == null || idProducto.isBlank()) {
+            throw new IllegalArgumentException("El ID del producto no puede estar vacío");
+        }
+        return resenaRepository.findByIdProducto(idProducto);
+    }
+
     public void eliminarResena(Long id) {
         if (!resenaRepository.existsById(id)) {
             throw new IllegalArgumentException("Reseña no encontrada");
