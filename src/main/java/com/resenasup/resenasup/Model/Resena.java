@@ -28,7 +28,7 @@ public class Resena {
     @Column(name = "id_producto", nullable = false)
     private String idProducto;
 
-    protected Resena() {}
+    public Resena() {}
 
     public Resena(String comentario, LocalDateTime fecha, Integer puntuacion, String idProducto) {
         this.comentario = comentario;
