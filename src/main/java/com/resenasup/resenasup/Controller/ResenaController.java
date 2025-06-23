@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//DOCUMENTACION SWAGGERUI
+//http://localhost:8081/doc/swagger-ui/index.html#/
+
 @RestController
 @RequestMapping("/api/v1/resenas")
 @RequiredArgsConstructor
