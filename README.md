@@ -1,4 +1,4 @@
-# Microservicio de Reseñas y Calificaciones
+# Microservicio de Reseñas y Soporte
 
 Este repositorio contiene el código fuente de un microservicio RESTful desarrollado con Spring Boot, diseñado para gestionar reseñas y calificaciones de productos. Permite a los usuarios crear, consultar, actualizar y eliminar reseñas, así como obtener estadísticas de puntuación para productos.
 
