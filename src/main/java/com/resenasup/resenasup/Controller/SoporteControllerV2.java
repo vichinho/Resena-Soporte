@@ -37,7 +37,6 @@ public class SoporteControllerV2 {
 
     @GetMapping("/{id}")
     public EntityModel<Soporte> getSoporteById(@PathVariable Long id) {
-        // Cambiar aquí para usar el método correcto
         Soporte soporte = soporteService.obtenerTodosSoportes().stream()
                 .filter(s -> s.getIdSoporte().equals(id))
                 .findFirst()
